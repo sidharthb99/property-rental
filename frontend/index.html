@@ -1,54 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Property Rental | Home</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8">
+  <title>Property Rental Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    ul.navbar {
+      list-style-type: none;
+      padding: 0;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    ul.navbar li {
+      display: inline;
+    }
+
+    ul.navbar li a {
+      text-decoration: none;
+      background-color: #3498db;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 5px;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+    ul.navbar li a:hover {
+      background-color: #2980b9;
+    }
+  </style>
 </head>
 <body>
 
-  <header class="navbar">
-    <div class="logo">🏠 PropertyRental</div>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="properties.html">Browse Properties</a>
-      <a href="add-property.html">List Your Property</a>
-      <a href="#">Login</a>
-    </nav>
-  </header>
+  <h1>Property Rental Dashboard</h1>
 
-  <section class="hero">
-    <h1>Find Your Next Home</h1>
-    <p>Browse thousands of rental properties near you.</p>
-    <a href="properties.html" class="btn">Explore Properties</a>
-  </section>
-
-  <section class="featured">
-    <h2>Featured Listings</h2>
-    <div class="property-grid">
-      <!-- Sample cards -->
-      <div class="property-card">
-        <img src="https://source.unsplash.com/400x250/?house" alt="House">
-        <div class="property-info">
-          <h3>Cozy Suburban Home</h3>
-          <p>$1,200/mo · New York, NY</p>
-        </div>
-      </div>
-      <div class="property-card">
-        <img src="https://source.unsplash.com/400x250/?apartment" alt="Apartment">
-        <div class="property-info">
-          <h3>Downtown Apartment</h3>
-          <p>$1,800/mo · San Francisco, CA</p>
-        </div>
-      </div>
-      <!-- Add more static or dynamic cards -->
-    </div>
-  </section>
-
-  <footer>
-    <p>© 2025 PropertyRental. All rights reserved.</p>
-  </footer>
+  <ul class="navbar">
+    <li><a href="/property-rental/frontend/users.html">Users</a></li>
+    <li><a href="/property-rental/frontend/properties.html">Properties</a></li>
+    <li><a href="/bookings.html">Bookings</a></li>
+    <li><a href="/owners.html">Owners</a></li>
+    <li><a href="/tenants.html">Tenants</a></li>
+    <li><a href="/payments.html">Payments</a></li>
+    <li><a href="/cities.html">Cities</a></li>
+    <li><a href="/contacts.html">Contacts</a></li>
+    <li><a href="/property-status-log.html">Property Status Log</a></li>
+    <li><a href="/user-contacts.html">User Contacts</a></li>
+  </ul>
 
 </body>
 </html>
