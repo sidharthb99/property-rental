@@ -81,23 +81,84 @@ app.post('/users', async (req, res) => {
 
 
 app.post('/properties', async (req, res) => {
-    const { owner_id,
-            title,
-            description,
-            address,
-            city_id,
-            price_per_month,
-            status } = req.body;
+    const {
+        owner_id,
+        title,
+        description,
+        address,
+        city_id,
+        price_per_month,
+        status
+    } = req.body;
 
-    try{
-        const result = await pool.query('insert into properties(owner_id, title, description, address, city_id, price_per_month, status) values ($1, $2, $3, $4, $5, $6, $7) returning *'
-            [owner_id, title, description, address, city_id, price_per_month, status || 'Available']
+    try {
+        const result = await pool.query(
+            'INSERT INTO properties (owner_id, title, description, address, city_id, price_per_month, status) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
+            [owner_id, title, description, address, city_id, price_per_month, status || 'available']
         );
         
         res.status(201).json(result.rows[0]);
-    }catch(err){
-        res.status(500).send('DB error');
-    }        
+    } catch (err) {
+        console.error('DB Error:', err.message);
+        res.status(500).json({ error: 'Database insert failed' });
+    }
+});
+
+app.post('/owners', async(req, res) => {
+  const {
+    owner_id,
+    phone_number,
+    bio
+  } = req.body;
+
+  try{
+    const result = await pool.query('insert into owners(owner_id, phone_number, bio) values($1, $2, $3) RETURNING *', 
+                                [owner_id, phone_number, bio]
+    );
+
+    res.status(201).json(result.rows[0]);
+
+  }catch (err) {
+        console.error('DB Error:', err.message);
+        res.status(500).json({ error: 'Database insert failed'});
+  }
+});
+
+app.post('/cities', async(req, res) => {
+  const {
+    name,
+    state,
+    country
+  } = req.body;
+
+  try{
+    const result = await pool.query('insert into cities(name, state, country) values($1, $2, $3) RETURNING *', 
+        [name, state, country]
+    );
+
+    res.status(201).json(result.rows[0]);
+  }catch (err) {
+        console.error('DB Error:', err.message);
+        res.status(500).json({ error: 'Database insert failed' });
+  }
+});
+
+app.post('/tenants', async(req, res) => {
+  const {
+    tenant_id, 
+    phone_number, 
+    occupation } = req.body;
+   
+    try{
+      const result = await pool.query('insert into tenants(tenant_id, phone_number, occupation) values($1, $2, $3) RETURNING *',
+                                  [tenant_id, phone_number, occupation]
+      );
+
+      res.status(201).json(result.rows[0]);
+    }catch (err) {
+        console.error('DB Error:', err.message);
+        res.status(500).json({ error: 'Database insert failed' });
+  }
 });
 
 const PORT = 5000;
