@@ -1,3 +1,37 @@
+
+document.getElementById('userForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  const role = document.getElementById('role').value;
+
+  try {
+    const response = await fetch('http://localhost:5000/users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ name, email, password, role })
+    });
+
+    if (!response.ok) {
+      throw new Error('User creation failed');
+    }
+
+    const data = await response.json();
+    document.getElementById('message').textContent = `User ${data.user.name} created successfully!`;
+    console.log(result);
+    alert('Property registered successfully!');
+    const userform = document.getElementById('userForm');
+    userform.reset();
+  } catch (err) {
+    console.error('Error submitting property:', err);
+    alert('Property submission failed');
+  }
+});
+
 // --- Properties Form ---
 const propertiesForm = document.getElementById('propertyForm');
 const propertyURL = "https://bxdq4q7w-5000.inc1.devtunnels.ms/properties";
@@ -100,5 +134,40 @@ if (cityForm) {
 
 
 // tenants form
+const tenantURL = "http://localhost:5000/tenants";
+const tenantform =  document.getElementById('tenantForm');
+
+if(tenantform){
+  tenantform.addEventListener('submit', async(e) => {
+    e,preventDefault();
+
+    const data = {
+      tenant_id: document.getElementById('tenant_id'),
+      property_id: document.getElementById('property_id'), 
+      start_date: document.getElementById('start_date'), 
+      end_date: document.getElementById('end_date'), 
+      status: document.getElementById('status')
+    };
+
+    try {
+      const res = await fetch(tenantURL, {
+        method: 'POST',
+        headers: { 'Content-type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      const result = await res.json();
+      console.log(result);
+      alert('Tenant registered successfully!');
+      cityForm.reset();
+    } catch (err) {
+      console.error('Error submitting Tenant:', err);
+      alert('Tenant submission failed');
+    }
+  });
+}
+
+// ---Booking--
+
+
 
 const tForm = document.getElementById('tenantForm'); 
