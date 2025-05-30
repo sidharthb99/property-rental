@@ -161,5 +161,26 @@ app.post('/tenants', async(req, res) => {
   }
 });
 
+app.post('/booking', async(req, res) => {
+  const {
+    tenant_id, 
+    property_id, 
+    start_date, 
+    end_date, 
+    status
+  } = req.body;
+
+  try{
+    const result = await pool.query('insert into bookings(tenant_id, property_id, start_date, end_date, status) values($1, $2, $3, $4, $5) RETURNING *',
+                    [tenant_id, property_id, start_date, end_date, status]
+    );
+    res.status(201).json(result.rows[0]);
+  } catch(err){
+    console.error('DB Error: ', err.message);
+    res.status(500).json({err: 'Database insert failed'});
+  }
+
+});
+
 const PORT = 5000;
 app.listen( PORT,  () =>console.log(`Server running on port ${PORT}`));
