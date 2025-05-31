@@ -1,36 +1,45 @@
+// User Form
+const userForm = document.getElementById('userForm');
+const userURL = "http://localhost:5000/users";
 
-document.getElementById('userForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
+if (userForm) {
+  userForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-  const name = document.getElementById('name').value;
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
-  const role = document.getElementById('role').value;
+    const data = {
+      name: document.getElementById('name').value,
+      email: document.getElementById('email').value,
+      password: document.getElementById('password').value,
+      role: document.getElementById('role').value
+    };
 
-  try {
-    const response = await fetch('http://localhost:5000/users', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ name, email, password, role })
-    });
+    try {
+      const res = await fetch(userURL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
 
-    if (!response.ok) {
-      throw new Error('User creation failed');
+      if (!res.ok) {
+        throw new Error('User creation failed');
+      }
+
+      const result = await res.json();
+      console.log(result);
+
+     
+      const userName = result.name || result.user?.name || "User";
+
+      document.getElementById('message').textContent = `${userName} created successfully!`;
+      alert('User registered successfully!');
+      userForm.reset();
+    } catch (err) {
+      console.error('Error submitting user:', err);
+      alert('User submission failed');
     }
+  });
+}
 
-    const data = await response.json();
-    document.getElementById('message').textContent = `User ${data.user.name} created successfully!`;
-    console.log(result);
-    alert('Property registered successfully!');
-    const userform = document.getElementById('userForm');
-    userform.reset();
-  } catch (err) {
-    console.error('Error submitting property:', err);
-    alert('Property submission failed');
-  }
-});
 
 // --- Properties Form ---
 const propertiesForm = document.getElementById('propertyForm');
@@ -133,34 +142,34 @@ if (cityForm) {
 }
 
 
-// tenants form
-const tenantURL = "http://localhost:5000/tenants";
-const tenantform =  document.getElementById('tenantForm');
 
-if(tenantform){
-  tenantform.addEventListener('submit', async(e) => {
-    e,preventDefault();
+// Tenants form
+const tenantURL = "http://localhost:5000/tenants";
+const tenantform = document.getElementById('tenantForm');
+
+if (tenantform) {
+  tenantform.addEventListener('submit', async (e) => {
+    e.preventDefault(); 
 
     const data = {
-      tenant_id: document.getElementById('tenant_id'),
-      property_id: document.getElementById('property_id'), 
-      start_date: document.getElementById('start_date'), 
-      end_date: document.getElementById('end_date'), 
-      status: document.getElementById('status')
+      tenant_id: document.getElementById('tenant_id').value,
+      phone_number: document.getElementById('phone_number').value,
+      occupation: document.getElementById('occupation').value
     };
 
     try {
       const res = await fetch(tenantURL, {
         method: 'POST',
-        headers: { 'Content-type': 'application/json' },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       });
+
       const result = await res.json();
       console.log(result);
       alert('Tenant registered successfully!');
-      cityForm.reset();
+      tenantform.reset(); 
     } catch (err) {
-      console.error('Error submitting Tenant:', err);
+      console.error('Error submitting tenant:', err);
       alert('Tenant submission failed');
     }
   });
