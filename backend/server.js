@@ -60,23 +60,26 @@ app.post('/users', async (req, res) => {
 
   // Hash password with scrypt
   crypto.scrypt(password, salt, 64, async (err, derivedKey) => {
-    if (err) throw err;
+  if (err) {
+    console.error('Scrypt Error:', err.message);
+    return res.status(500).send('Password hashing failed');
+  }
 
-    const hashedPassword = derivedKey.toString('hex');
+  const hashedPassword = derivedKey.toString('hex');
 
-    try {
-      const result = await pool.query(
-        `INSERT INTO users (name, email, password, role, salt) 
-         VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-        [name, email, hashedPassword, role, salt]
-      );
+  try {
+    const result = await pool.query(
+      `INSERT INTO users (name, email, password, role, salt) 
+       VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+      [name, email, hashedPassword, role, salt]
+    );
 
-      res.json({ user: result.rows[0] });
-    } catch (dbErr) {
-      console.error(dbErr.message);
-      res.status(500).send('DB Error');
-    }
-  });
+    res.status(201).json({ user: result.rows[0] });
+  } catch (dbErr) {
+    console.error('DB Insert Error:', dbErr.message);
+    res.status(500).send('Database insert failed');
+  }
+});
 });
 
 
@@ -180,6 +183,77 @@ app.post('/booking', async(req, res) => {
     res.status(500).json({err: 'Database insert failed'});
   }
 
+});
+
+app.post('/payment', async (req, res) => {
+  const {
+    booking_id,
+    amount,
+    payment_date,
+    payment_method
+  } = req.body;
+
+  try {
+    const result = await pool.query('Insert into payments(booking_id, amount, payment_date, payment_method) values($1, $2, $3, $4) RETURNING *',
+      [booking_id, amount, payment_date, payment_method]
+    );
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error('DB Error: ', err.message);
+    res.status(500).json({ err: 'Database insert failed' });
+  }
+});
+
+app.post('/contact_method', async(req, res) => {
+  const {method_name} = req.body;
+
+  try{
+    const result = await pool.query('insert into contact_method(method_name) values($1) RETURNING *',
+      [method_name]
+    );
+    res.status(201).json(result.rows[0]);
+  }
+  catch(err){
+    console.error('DB Error: ', err.message);
+    res.status(500).json({err: 'Database insert failed'});
+  }
+});
+
+app.post('/contacts', async(req, res) => {
+  const {
+    user_id,
+    method_id,
+    contact_value,
+    address
+  } = req.body;
+
+  try{
+    const result = await pool.query('insert into contacts(user_id, method_id, contact_value, address) values($1, $2, $3, $4) RETURNING *',
+      [user_id, method_id, contact_value, address]
+    );
+    res.status(201).json(result.rows[0]);
+  } catch(err){
+    console.error('DB Error: ', err.message);
+    res.status(500).json({err: 'Database insert failed'});
+  }
+});
+
+app.post('/property_status_log', async (req, res) => {
+  const {
+    property_id,
+    status
+  } = req.body;
+
+  try {
+    const result = await pool.query(
+      'INSERT INTO property_status_logs(property_id, status) VALUES ($1, $2) RETURNING *',
+      [property_id, status]
+    );
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error('DB Error: ', err.message);
+    res.status(500).json({ err: 'Database insert failed' });
+  }
 });
 
 const PORT = 5000;
