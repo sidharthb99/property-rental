@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+     <h2>Payment Form</h2>
+  <form id="paymentForm">
+    <label for="booking_id">Booking ID:</label><br>
+    <input type="number" id="booking_id" name="booking_id" required><br><br>
+
+    <label for="amount">Amount:</label><br>
+    <input type="number" step="0.01" id="amount" name="amount" required><br><br>
+
+    <label for="payment_date">Payment Date:</label><br>
+    <input type="date" id="payment_date" name="payment_date" required><br><br>
+
+    <label for="payment_method">Payment Method:</label><br>
+    <select id="payment_method" name="payment_method" required>
+      <option value="credit_card">Credit Card</option>
+      <option value="debit_card">Debit Card</option>
+      <option value="upi">UPI</option>
+      <option value="net_banking">Net Banking</option>
+      <option value="cash">Cash</option>
+    </select><br><br>
+
+    <button type="submit">Submit Payment</button>
+  </form>
+  <script src="JS/index.js"></script>
+</body>
+
+</html>

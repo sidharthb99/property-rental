@@ -27,10 +27,10 @@ if (userForm) {
       const result = await res.json();
       console.log(result);
 
-     
+
       const userName = result.name || result.user?.name || "User";
 
-      document.getElementById('message').textContent = `${userName} created successfully!`;
+      // document.getElementById('message').textContent = `${userName} created successfully!`;
       alert('User registered successfully!');
       userForm.reset();
     } catch (err) {
@@ -149,7 +149,7 @@ const tenantform = document.getElementById('tenantForm');
 
 if (tenantform) {
   tenantform.addEventListener('submit', async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
 
     const data = {
       tenant_id: document.getElementById('tenant_id').value,
@@ -167,7 +167,7 @@ if (tenantform) {
       const result = await res.json();
       console.log(result);
       alert('Tenant registered successfully!');
-      tenantform.reset(); 
+      tenantform.reset();
     } catch (err) {
       console.error('Error submitting tenant:', err);
       alert('Tenant submission failed');
@@ -176,7 +176,193 @@ if (tenantform) {
 }
 
 // ---Booking--
+const bookingForm = document.getElementById('bookingForm');
+const bookingURL = 'http://localhost:5000/booking';
+if (bookingForm) {
+  bookingForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
+    const data = {
+      tenant_id: document.getElementById('tenant_id').value,
+      property_id: document.getElementById('property_id').value,
+      start_date: document.getElementById('start_date').value,
+      end_date: document.getElementById('end_date').value,
+      status: document.getElementById('status').value
+    };
 
+    try {
+      const response = await fetch(bookingURL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
 
-const tForm = document.getElementById('tenantForm'); 
+      const result = await response.json();
+
+      if (response.ok) {
+        alert('Booking created successfully!');
+        console.log(result);
+        bookingForm.reset();
+      } else {
+        alert('Booking failed: ' + (result?.err || 'Unknown error'));
+        console.error(result);
+      }
+    } catch (error) {
+      console.error('Error submitting booking:', error);
+      alert('Error submitting booking. Check the console for details.');
+    }
+  });
+}
+
+// ----payment-----
+const paymentForm = document.getElementById('paymentForm');
+const paymentURL = 'http://localhost:5000/payment';
+if (paymentForm) {
+  paymentForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const data = {
+      booking_id: document.getElementById('booking_id').value,
+      amount: document.getElementById('amount').value,
+      payment_date: document.getElementById('payment_date').value,
+      payment_method: document.getElementById('payment_method').value
+    };
+
+    try {
+      const response = await fetch(paymentURL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        alert('Payment recorded successfully!');
+        console.log(result);
+        paymentForm.reset();
+      } else {
+        alert('Payment failed: ' + (result?.err || 'Unknown error'));
+        console.error(result);
+      }
+    } catch (error) {
+      console.error('Error submitting payment:', error);
+      alert('Error submitting payment. Check the console for details.');
+    }
+  });
+}
+
+// ---contact_method--- 
+
+const contactMethodForm = document.getElementById('contactMethodForm');
+const contactMethodURL = 'http://localhost:5000/contact_method';
+
+if (contactMethodForm) {
+  contactMethodForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const data = {
+      method_name: document.getElementById('method_name').value
+    };
+
+    try {
+      const response = await fetch(contactMethodURL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        alert('Contact method added successfully!');
+        console.log(result);
+        contactMethodForm.reset();
+      } else {
+        alert('Failed to add contact method: ' + (result?.err || 'Unknown error'));
+        console.error(result);
+      }
+    } catch (error) {
+      console.error('Error submitting contact method:', error);
+      alert('Error submitting contact method. Check the console for details.');
+    }
+  });
+}
+
+// ---contactForm---
+
+const contactForm = document.getElementById('contactForm');
+const contactURL = 'http://localhost:5000/contacts';
+
+if (contactForm) {
+  contactForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const data = {
+      user_id: document.getElementById('user_id').value,
+      method_id: document.getElementById('method_id').value,
+      contact_value: document.getElementById('contact_value').value,
+      address: document.getElementById('address').value
+    };
+
+    try {
+      const response = await fetch(contactURL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        alert('Contact added successfully!');
+        console.log(result);
+        contactForm.reset();
+      } else {
+        alert('Failed to add contact: ' + (result?.err || 'Unknown error'));
+        console.error(result);
+      }
+    } catch (error) {
+      console.error('Error submitting contact:', error);
+      alert('Error submitting contact. Check the console for details.');
+    }
+  });
+}
+
+// ---property-status-log---
+
+const propertyStatusForm = document.getElementById('propertyStatusForm');
+const statusLogURL = 'http://localhost:5000/property_status_log'; 
+
+if (propertyStatusForm) {
+  propertyStatusForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const data = {
+      property_id: document.getElementById('property_id').value,
+      status: document.getElementById('status').value
+    };
+
+    try {
+      const res = await fetch(statusLogURL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      const result = await res.json();
+
+      if (res.ok) {
+        alert('Property status logged successfully!');
+        console.log(result);
+        document.getElementById('message').textContent = `Status logged for Property ID ${result.property_id}`;
+        propertyStatusForm.reset();
+      } else {
+        throw new Error(result?.err || 'Unknown error');
+      }
+    } catch (err) {
+      console.error('Error submitting status log:', err);
+      alert('Failed to log property status');
+    }
+  });
+}
