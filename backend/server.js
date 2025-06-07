@@ -256,5 +256,107 @@ app.post('/property_status_log', async (req, res) => {
   }
 });
 
+// --------------------Get API------------------------------
+app.get('/users', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM users');
+    res.json(result.rows);
+  } catch (err) {
+    console.error('DB Error:', err.message);
+    res.status(500).json({ err: 'Failed to fetch users' });
+  }
+});
+
+app.get('/owners', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM owners');
+    res.json(result.rows);
+  } catch (err) {
+    console.error('DB Error:', err.message);
+    res.status(500).json({ err: 'Failed to fetch owners' });
+  }
+});
+
+app.get('/tenants', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM tenants');
+    res.json(result.rows);
+  } catch (err) {
+    console.error('DB Error:', err.message);
+    res.status(500).json({ err: 'Failed to fetch tenants' });
+  }
+});
+
+app.get('/properties', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM properties');
+    res.json(result.rows);
+  } catch (err) {
+    console.error('DB Error:', err.message);
+    res.status(500).json({ err: 'Failed to fetch properties' });
+  }
+});
+
+app.get('/bookings', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM bookings');
+    res.json(result.rows);
+  } catch (err) {
+    console.error('DB Error:', err.message);
+    res.status(500).json({ err: 'Failed to fetch bookings' });
+  }
+});
+
+app.get('/payments', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM payments');
+    res.json(result.rows);
+  } catch (err) {
+    console.error('DB Error:', err.message);
+    res.status(500).json({ err: 'Failed to fetch payments' });
+  }
+});
+
+app.get('/cities', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM cities');
+    res.json(result.rows);
+  } catch (err) {
+    console.error('DB Error:', err.message);
+    res.status(500).json({ err: 'Failed to fetch cities' });
+  }
+});
+
+app.get('/contact', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM contacts');
+    res.json(result.rows);
+  } catch (err) {
+    console.error('DB Error:', err.message);
+    res.status(500).json({ err: 'Failed to fetch contact' });
+  }
+});
+
+app.get('/contact_method', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM contact_method');
+    res.json(result.rows);
+  } catch (err) {
+    console.error('DB Error:', err.message);
+    res.status(500).json({ err: 'Failed to fetch contact_method' });
+  }
+});
+
+app.get('/property_status_logs', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM property_status_logs');
+    res.json(result.rows);
+  } catch (err) {
+    console.error('DB Error:', err.message);
+    res.status(500).json({ err: 'Failed to fetch status logs' });
+  }
+});
+
+
 const PORT = 5000;
 app.listen( PORT,  () =>console.log(`Server running on port ${PORT}`));
