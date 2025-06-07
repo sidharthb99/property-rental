@@ -4,9 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="css/tenant.css">
 </head>
 <body>
     <h2>Add Tenant Information</h2>
+
+    <table id="tenanttable">
+    <thead>
+      <tr>
+        <th>User ID</th>
+        <th>Tenant ID</th>
+        <th>Occupation</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Data will be inserted here -->
+    </tbody>
+  </table>
 
   <form id="tenantForm">
     <label for="tenant_id">User ID:</label>
@@ -20,6 +34,7 @@
 
     <button type="submit">Submit</button>
   </form>
+  <script src="JS/tenant.js"></script>
 </body>
-<script src="JS/index.js"></script>
+
 </html>

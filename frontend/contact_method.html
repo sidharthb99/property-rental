@@ -4,13 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="css/properrties.css">
 </head>
 <body>
+ <table id="contact_methodtable">
+    <thead>
+      <tr>
+        <th>MethodID</th>
+        <th>contact_method_name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Data will be inserted here -->
+    </tbody>
+  </table>
+
+
     <form id="contactMethodForm">
   <label for="method_name">Contact Method:</label>
   <input type="text" id="method_name" name="method_name" required />
   <button type="submit">Add Contact Method</button>
 </form>
-<script src="JS/index.js"></script>
+<script src="JS/contact_method.js"></script>
 </body>
 </html>

@@ -4,9 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="css/properrties.css">
 </head>
 <body>
      <h2>Add New Property</h2>
+     <table id="propertytable">
+    <thead>
+      <tr>
+        <th>PropertyID</th>
+        <th>OwnerId</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Address</th>
+        <th>CityId</th>
+        <th>Rent</th>
+        <th>status</th>
+        <th>Created_At</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Data will be inserted here -->
+    </tbody>
+  </table>
 
   <form id="propertyForm">
     <label for="owner_id">Owner ID</label>
@@ -35,7 +54,8 @@
     </select>
 
     <button type="submit">Submit</button>
+    <script src="JS/properties.js"></script>
 </body>
-<script src="JS/index.js"></script>
+
 </html>
 

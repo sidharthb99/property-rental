@@ -4,31 +4,49 @@
   <meta charset="UTF-8">
   <title>Property Rental Dashboard</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f9f9f9;
+    * {
       margin: 0;
-      padding: 20px;
-      text-align: center;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    h1 {
-      color: #333;
+    body {
+      font-family: Arial, sans-serif;
+      background: url('/property-rental/assets/background.jpg') no-repeat center center fixed;
+      background-size: cover;
+      height: 100vh;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    .sidebar {
+      width: 250px;
+      background-color: rgba(0, 0, 0, 0.85);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100%;
+      transition: transform 0.3s ease;
+      z-index: 1000;
+    }
+
+    .sidebar.closed {
+      transform: translateX(-100%);
+    }
+
+    .sidebar h2 {
+      text-align: center;
       margin-bottom: 30px;
     }
 
     ul.navbar {
       list-style-type: none;
-      padding: 0;
-      margin: 0 auto;
       display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
+      flex-direction: column;
       gap: 15px;
-    }
-
-    ul.navbar li {
-      display: inline;
     }
 
     ul.navbar li a {
@@ -39,29 +57,83 @@
       border-radius: 5px;
       font-weight: bold;
       transition: background-color 0.3s ease;
+      display: block;
     }
 
     ul.navbar li a:hover {
       background-color: #2980b9;
     }
+
+    .main-content {
+      margin-left: 270px;
+      padding: 40px;
+      transition: margin-left 0.3s ease;
+    }
+
+    .main-content.collapsed {
+      margin-left: 20px;
+    }
+
+    .toggle-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      z-index: 1100;
+      font-size: 18px;
+    }
+
+    .toggle-btn:hover {
+      background-color: #2980b9;
+    }
+
+    h1 {
+      font-size: 36px;
+      text-shadow: 1px 1px 3px #000;
+    }
   </style>
 </head>
 <body>
 
-  <h1>Property Rental Dashboard</h1>
+  <!-- Toggle Button -->
+  <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
 
-  <ul class="navbar">
-    <li><a href="/property-rental/frontend/users.html">Users</a></li>
-    <li><a href="/property-rental/frontend/properties.html">Properties</a></li>
-    <li><a href="/property-rental/frontend/booking.html">Bookings</a></li>
-    <li><a href="/property-rental/frontend/owners.html">Owners</a></li>
-    <li><a href="/property-rental/frontend/tenants.html">Tenants</a></li>
-    <li><a href="/property-rental/frontend/payment.html">Payments</a></li>
-    <li><a href="/property-rental/frontend/cities.html">Cities</a></li>
-    <li><a href="/property-rental/frontend/contact.html">Contacts</a></li>
-    <li><a href="/property-rental/frontend/propert_status_log.html">Property Status Log</a></li>
-    <li><a href="/property-rental/frontend/contact_method.html">User Contacts</a></li>
-  </ul>
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <h2>Dashboard</h2>
+    <ul class="navbar">
+      <li><a href="/property-rental/frontend/users.html">Users</a></li>
+      <li><a href="/property-rental/frontend/properties.html">Properties</a></li>
+      <li><a href="/property-rental/frontend/booking.html">Bookings</a></li>
+      <li><a href="/property-rental/frontend/owners.html">Owners</a></li>
+      <li><a href="/property-rental/frontend/tenants.html">Tenants</a></li>
+      <li><a href="/property-rental/frontend/payment.html">Payments</a></li>
+      <li><a href="/property-rental/frontend/cities.html">Cities</a></li>
+      <li><a href="/property-rental/frontend/contact.html">Contacts</a></li>
+      <li><a href="/property-rental/frontend/propert_status_log.html">Property Status Log</a></li>
+      <li><a href="/property-rental/frontend/contact_method.html">User Contacts</a></li>
+    </ul>
+  </div>
 
+  <!-- Main Content -->
+  <div class="main-content" id="mainContent">
+    <h1>Welcome to the Property Rental Dashboard</h1>
+    <p>Select an option from the sidebar to manage data.</p>
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const mainContent = document.getElementById('mainContent');
+
+      sidebar.classList.toggle('closed');
+      mainContent.classList.toggle('collapsed');
+    }
+  </script>
 </body>
 </html>

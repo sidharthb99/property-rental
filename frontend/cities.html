@@ -4,9 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="css/city.css">
 </head>
 <body>
      <h1>Add a New City</h1>
+
+       <table id="citytable">
+    <thead>
+      <tr>
+        <th>City_id</th>
+        <th>City Name</th>
+        <th>State</th>
+        <th>Country</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Data will be inserted here -->
+    </tbody>
+  </table>
+
   <form id="cityForm">
     <label for="name">City Name:</label>
     <input type="text" id="name" name="name" required><br><br>
@@ -19,7 +35,8 @@
 
     <button type="submit">Submit</button>
   </form>
+  <script src="JS/cities.js"></script>
 </body>
-<script src="JS/index.js"></script>
+
 </html>
 

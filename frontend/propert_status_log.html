@@ -4,9 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="css/properrties.css">
 </head>
 <body>
      <h2>Log Property Status</h2>
+
+     <table id="property_statustable">
+    <thead>
+      <tr>
+        <th>LogID</th>
+        <th>PropertyID</th>
+        <th>Status</th>
+        <th>Changed At</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Data will be inserted here -->
+    </tbody>
+  </table>
   <form id="propertyStatusForm">
     <label for="property_id">Property ID:</label>
     <input type="number" id="property_id" name="property_id" required /><br><br>
@@ -23,7 +38,6 @@
   </form>
 
   <p id="message"></p>
-<script src="JS/index.js"></script>
+<script src="JS/property_status.js"></script>
 </body>
-
 </html>

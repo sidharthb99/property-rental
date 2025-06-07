@@ -4,8 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="css/properrties.css">
 </head>
 <body>
+  <table id="contacttable">
+    <thead>
+      <tr>
+        <th>ContactID</th>
+        <th>UserID</th>
+        <th>MethodID</th>
+        <th>contact_value</th>
+        <th>address</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Data will be inserted here -->
+    </tbody>
+  </table>
+
     <form id="contactForm">
   <label for="user_id">User ID:</label>
   <input type="number" id="user_id" required>
@@ -21,7 +37,7 @@
 
   <button type="submit">Add Contact</button>
 </form>
-<script src="JS/index.js"></script>
+<script src="JS/contact_form.js"></script>
 </body>
 
 </html>
