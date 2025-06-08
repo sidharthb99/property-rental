@@ -357,6 +357,26 @@ app.get('/property_status_logs', async (req, res) => {
   }
 });
 
+app.get('/report', async(req, res) => {
+  try{
+    const result = await pool.query('select c.name  ,count(p.property_id) as total_properties from properties p join cities c on c.city_id = p.city_id  group by p.city_id, c.city_id');
+    res.json(result.rows)
+  } catch(err){
+    console.error('DB Error:', err.message);
+    res.status(500).json({ err: 'Failed to fetch Reports logs'});
+  }
+});
+
+app.get('/report_payment', async(req, res) => {
+   try{
+    const result = await pool.query('select payment_method, count(*) from payments group by payment_method');
+    res.json(result.rows)
+  }catch(err){
+    console.error('DB Error:', err.message);
+    res.status(500).json({ err: 'Failed to fetch Reports logs'});
+  } 
+});
+
 
 const PORT = 5000;
 app.listen( PORT,  () =>console.log(`Server running on port ${PORT}`));
