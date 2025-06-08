@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chart</title>
+</head>
+<body>
+    <div class="chart-div">
+        <canvas id="myChart"></canvas>
+    </div>
+
+    <div class="chart-div">
+        <canvas id="myChart_1"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        apiURL = 'http://localhost:5000/report';
+        fetch(apiURL)
+            .then(response => {
+                if (!response.ok) throw new Error("Failed to fetch chart data");
+                return response.json();
+            })
+            .then(data => {
+                const labels = data.map(entry => `City ${entry.name}`);
+                const values = data.map(entry => entry.total_properties);
+
+                const ctx = document.getElementById('myChart').getContext('2d');
+
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Total Properties by City',
+                            data: values,
+                            backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    precision: 0
+                                }
+                            }
+                        }
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Chart Load Error:', error.message);
+            });
+
+    </script>
+
+    <script>
+        apiURL = 'http://localhost:5000/report_payment';
+        fetch(apiURL)
+            .then(response => {
+                if (!response.ok) throw new Error("Failed to fetch chart data");
+                return response.json();
+            })
+            .then(data => {
+                const labels = data.map(entry => `City ${entry.payment_method}`);
+                const values = data.map(entry => entry.count);
+
+                const ctx = document.getElementById('myChart_1').getContext('2d');
+
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Total Properties by City',
+                            data: values,
+                            backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    precision: 0
+                                }
+                            }
+                        }
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Chart Load Error:', error.message);
+            });
+    </script>
+</body>
+</html>
