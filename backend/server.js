@@ -53,7 +53,7 @@ const crypto = require('crypto');
 
 
 app.post('/users', async (req, res) => {
-  const { name, email, password, role } = req.body;
+  const { name, email, password} = req.body;
 
   // Generate a random salt
   const salt = crypto.randomBytes(16).toString('hex');
@@ -69,9 +69,9 @@ app.post('/users', async (req, res) => {
 
   try {
     const result = await pool.query(
-      `INSERT INTO users (name, email, password, role, salt) 
-       VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-      [name, email, hashedPassword, role, salt]
+      `INSERT INTO users (name, email, password, salt) 
+       VALUES ($1, $2, $3, $4) RETURNING *`,
+      [name, email, hashedPassword, salt]
     );
 
     res.status(201).json({ user: result.rows[0] });
