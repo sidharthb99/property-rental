@@ -1,6 +1,7 @@
 const tenant_url = "http://localhost:5000/contact";
 
-fetch(tenant_url)
+async function fetchdata() {
+  fetch(tenant_url)
     .then(response => {
         if (!response.ok)
             throw new Error("Failed to fetch contact Data");
@@ -24,8 +25,9 @@ fetch(tenant_url)
     .catch(err => {
         console.log(err.message);
     });
+}
 
-
+document.addEventListener('DOMContenLoaded', fetchdata);
 
 const contactForm = document.getElementById('contactForm');
 const contactURL = 'http://localhost:5000/contacts';
@@ -33,6 +35,15 @@ const contactURL = 'http://localhost:5000/contacts';
 if (contactForm) {
   contactForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+    const submitButton = contactForm.querySelector('button[type="submit"]');
+        const loadingIndicator = document.getElementById('loadingIndicator'); 
+
+        submitButton.textContent = 'Submitting...';
+        submitButton.disabled = true;
+
+        if (loadingIndicator) {
+            loadingIndicator.style.display = 'flex'; 
+        }
 
     const data = {
       user_id: document.getElementById('user_id').value,
@@ -54,6 +65,7 @@ if (contactForm) {
         alert('Contact added successfully!');
         console.log(result);
         contactForm.reset();
+        await fetchdata();
       } else {
         alert('Failed to add contact: ' + (result?.err || 'Unknown error'));
         console.error(result);
@@ -61,6 +73,12 @@ if (contactForm) {
     } catch (error) {
       console.error('Error submitting contact:', error);
       alert('Error submitting contact. Check the console for details.');
-    }
+    }finally {
+            submitButton.textContent = 'Submit';
+            submitButton.disabled = false;
+            if (loadingIndicator) {
+                loadingIndicator.style.display = 'none';
+            }
+        }
   });
 }

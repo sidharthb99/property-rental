@@ -1,6 +1,7 @@
 const tenant_url = "http://localhost:5000/contact_method";
 
-fetch(tenant_url)
+async function fetchdata() {
+  fetch(tenant_url)
     .then(response => {
         if (!response.ok)
             throw new Error("Failed to fetch payment Data");
@@ -21,7 +22,9 @@ fetch(tenant_url)
     .catch(err => {
         console.log(err.message);
     });
+}
 
+document.addEventListener('DOMContentLoaded', fetchdata);
 
 const contactMethodForm = document.getElementById('contactMethodForm');
 const contactMethodURL = 'http://localhost:5000/contact_method';
@@ -29,7 +32,16 @@ const contactMethodURL = 'http://localhost:5000/contact_method';
 if (contactMethodForm) {
   contactMethodForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+    
+    const submitButton = contactMethodForm.querySelector('button[type="submit"]');
+        const loadingIndicator = document.getElementById('loadingIndicator'); 
 
+        submitButton.textContent = 'Submitting...';
+        submitButton.disabled = true;
+
+        if (loadingIndicator) {
+            loadingIndicator.style.display = 'flex'; 
+        }
     const data = {
       method_name: document.getElementById('method_name').value
     };
@@ -47,6 +59,7 @@ if (contactMethodForm) {
         alert('Contact method added successfully!');
         console.log(result);
         contactMethodForm.reset();
+        await fetchdata();
       } else {
         alert('Failed to add contact method: ' + (result?.err || 'Unknown error'));
         console.error(result);
@@ -54,6 +67,12 @@ if (contactMethodForm) {
     } catch (error) {
       console.error('Error submitting contact method:', error);
       alert('Error submitting contact method. Check the console for details.');
-    }
+    }finally {
+            submitButton.textContent = 'Submit';
+            submitButton.disabled = false;
+            if (loadingIndicator) {
+                loadingIndicator.style.display = 'none';
+            }
+        }
   });
 }

@@ -1,6 +1,7 @@
 const tenant_url = "http://localhost:5000/bookings";
 
-fetch(tenant_url)
+async function fetchdata() {
+  fetch(tenant_url)
     .then(response => {
         if (!response.ok)
             throw new Error("Failed to fetch booking Data");
@@ -8,7 +9,7 @@ fetch(tenant_url)
     })
     .then(data => {
         const tbody = document.querySelector("#bookingtable tbody");
-
+        tbody.innerHTML = '';
         data.forEach(city => {
             const row = document.createElement("tr");
             row.innerHTML = `
@@ -26,14 +27,23 @@ fetch(tenant_url)
     .catch(err => {
         console.log(err.message);
     });
+};
 
-
+document.addEventListener('DOMContentLoaded', fetchdata)
 
 const bookingForm = document.getElementById('bookingForm');
 const bookingURL = 'http://localhost:5000/booking';
 if (bookingForm) {
   bookingForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+
+    const submitbutton =  bookingForm.querySelector('button[type="submit"]');
+    const loadingIndicator = document.getElementById('loadingIndicator');
+    submitbutton.textContent = '...Submitting';
+    submitbutton.disabled = true;
+    if(loadingIndicator){
+      loadingIndicator.style.display = 'flex';
+    }
 
     const data = {
       tenant_id: document.getElementById('tenant_id').value,
@@ -56,6 +66,7 @@ if (bookingForm) {
         alert('Booking created successfully!');
         console.log(result);
         bookingForm.reset();
+        await fetchdata();
       } else {
         alert('Booking failed: ' + (result?.err || 'Unknown error'));
         console.error(result);
@@ -63,6 +74,12 @@ if (bookingForm) {
     } catch (error) {
       console.error('Error submitting booking:', error);
       alert('Error submitting booking. Check the console for details.');
+    }finally{
+      submitbutton.textContent = 'Submit';
+      submitbutton.disabled = false;
+      if (loadingIndicator) {
+        loadingIndicator.style.display = 'none';
+      }
     }
   });
 }

@@ -1,139 +1,177 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <title>Property Rental Dashboard</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StayFinder - Property Rental</title>
+  <link rel="stylesheet" href="style.css">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-      background: url('/property-rental/assets/background.jpg') no-repeat center center fixed;
-      background-size: cover;
-      height: 100vh;
-      color: #fff;
-      overflow-x: hidden;
-    }
-
-    .sidebar {
-      width: 250px;
-      background-color: rgba(0, 0, 0, 0.85);
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      position: fixed;
-      left: 0;
-      top: 0;
-      height: 100%;
-      transition: transform 0.3s ease;
-      z-index: 1000;
-    }
-
-    .sidebar.closed {
-      transform: translateX(-100%);
-    }
-
-    .sidebar h2 {
+    .featured-properties {
+      padding: 40px 20px;
+      background-color: #f9f9f9;
       text-align: center;
-      margin-bottom: 30px;
     }
 
-    ul.navbar {
-      list-style-type: none;
+    .featured-properties h2 {
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+      color: #333;
+    }
+
+    .property-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .property-box {
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      text-align: left;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
       display: flex;
       flex-direction: column;
-      gap: 15px;
+      justify-content: space-between; 
     }
 
-    ul.navbar li a {
-      text-decoration: none;
-      background-color: #3498db;
-      color: white;
-      padding: 10px 15px;
-      border-radius: 5px;
+    .property-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .property-box img {
+      width: 100%;
+      height: 200px; 
+      object-fit: cover; 
+      border-bottom: 1px solid #eee;
+    }
+
+    .property-info {
+      padding: 15px;
+    }
+
+    .property-info h3 {
+      font-size: 1.3rem;
+      color: #333;
+      margin-bottom: 8px;
+    }
+
+    .property-info p {
+      font-size: 0.95rem;
+      color: #666;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+
+    .property-info .price {
+      font-size: 1.2rem;
       font-weight: bold;
-      transition: background-color 0.3s ease;
+      color: #007bff; 
+      margin-top: 10px;
+      display: block; 
+    }
+
+    .property-box button {
       display: block;
-    }
-
-    ul.navbar li a:hover {
-      background-color: #2980b9;
-    }
-
-    .main-content {
-      margin-left: 270px;
-      padding: 40px;
-      transition: margin-left 0.3s ease;
-    }
-
-    .main-content.collapsed {
-      margin-left: 20px;
-    }
-
-    .toggle-btn {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      background-color: #3498db;
+      width: calc(100% - 30px);
+      margin: 15px; 
+      padding: 10px 15px;
+      background-color: #f4b400; 
       color: white;
       border: none;
-      padding: 10px 15px;
       border-radius: 5px;
+      font-size: 1rem;
       cursor: pointer;
-      z-index: 1100;
-      font-size: 18px;
+      transition: background-color 0.3s ease;
     }
 
-    .toggle-btn:hover {
-      background-color: #2980b9;
-    }
-
-    h1 {
-      font-size: 36px;
-      text-shadow: 1px 1px 3px #000;
+    .property-box button:hover {
+      background-color: #e0a300; /* Darker shade on hover */
     }
   </style>
 </head>
+
 <body>
+  <div class="outer_box">
+    <header class="navbar">
+      <div class="logo1"> <img src="images/converted_symbol.svg" alt="StayFinder Logo"></div>
+      <div class="logo"> StayFinder</div>
+      <nav class="nav-links">
+        <a href="/property-rental/frontend/users.html">Users</a>
+        <a href="/property-rental/frontend/properties.html">Properties</a>
+        <a href="/property-rental/frontend/booking.html">Bookings</a>
+        <a href="/property-rental/frontend/owners.html">Owners</a>
+        <a href="/property-rental/frontend/tenants.html">Tenants</a>
+        <a href="/property-rental/frontend/payment.html">Payments</a>
+        <a href="/property-rental/frontend/cities.html">Cities</a>
+        <a href="/property-rental/frontend/contact.html">Contacts</a>
+        <a href="/property-rental/frontend/contact_method.html">Contact Methods</a>
+        <a href="/property-rental/frontend/propert_status_log.html">Status Logs</a>
+        <a href="/property-rental/frontend/report.html">Statistics</a>
+      </nav>
+    </header>
+    <main class="hero">
+      <div class="hero-content">
+        <img src="images/unnamed.png" alt="Hero Image" class="hero-image">
+        <h1>Find your perfect getaway</h1>
+        <p>Discover a wide range of properties for rent, from cozy cabins to luxurious villas.</p>
+        <div class="search-box">
+          <input type="text" placeholder="Where are you going?" />
+          <button>Search</button>
+        </div>
+      </div>
+    </main>
 
-  <!-- Toggle Button -->
-  <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+    <section class="featured-properties">
+      <h2>Featured Properties</h2>
+      <div class="property-grid">
+        <div class="property-box">
+          <img src="/property-rental/frontend/images/unnamed (2).png" alt="Property 1">
+          <div class="property-info">
+            <h3>Cozy Downtown Apartment</h3>
+            <p>A charming 1-bedroom apartment in the heart of the city, perfect for urban explorers.</p>
+            <span class="price">$1200/month</span>
+          </div>
+          <button>View Details</button>
+        </div>
 
-  <!-- Sidebar -->
-  <div class="sidebar" id="sidebar">
-    <h2>Dashboard</h2>
-    <ul class="navbar">
-      <li><a href="/property-rental/frontend/users.html">Users</a></li>
-      <li><a href="/property-rental/frontend/properties.html">Properties</a></li>
-      <li><a href="/property-rental/frontend/booking.html">Bookings</a></li>
-      <li><a href="/property-rental/frontend/owners.html">Owners</a></li>
-      <li><a href="/property-rental/frontend/tenants.html">Tenants</a></li>
-      <li><a href="/property-rental/frontend/payment.html">Payments</a></li>
-      <li><a href="/property-rental/frontend/cities.html">Cities</a></li>
-      <li><a href="/property-rental/frontend/contact.html">Contacts</a></li>
-      <li><a href="/property-rental/frontend/propert_status_log.html">Property Status Log</a></li>
-      <li><a href="/property-rental/frontend/contact_method.html">User Contacts</a></li>
-    </ul>
+        <div class="property-box">
+          <img src="images/unnamed (1).png" alt="Property 2">
+          <div class="property-info">
+            <h3>Spacious Family Home</h3>
+            <p>4 beds, 3 baths with a large backyard. Ideal for families looking for comfort.</p>
+            <span class="price">$2500/month</span>
+          </div>
+          <button>View Details</button>
+        </div>
+
+        <div class="property-box">
+          <img src="images/unnamed (5).png" alt="Property 3">
+          <div class="property-info">
+            <h3>Beachfront Villa</h3>
+            <p>Luxurious villa with direct beach access and stunning ocean views. Unwind and relax.</p>
+            <span class="price">$5000/month</span>
+          </div>
+          <button>View Details</button>
+        </div>
+
+        <div class="property-box">
+          <img src="images/unnamed (4).png" alt="Property 4">
+          <div class="property-info">
+            <h3>Rustic Mountain Cabin</h3>
+            <p>Escape to nature in this serene cabin, surrounded by breathtaking mountain scenery.</p>
+            <span class="price">$950/month</span>
+          </div>
+          <button>View Details</button>
+        </div>
+    </section>
+
   </div>
-
-  <!-- Main Content -->
-  <div class="main-content" id="mainContent">
-    <h1>Welcome to the Property Rental Dashboard</h1>
-    <p>Select an option from the sidebar to manage data.</p>
-  </div>
-
-  <script>
-    function toggleSidebar() {
-      const sidebar = document.getElementById('sidebar');
-      const mainContent = document.getElementById('mainContent');
-
-      sidebar.classList.toggle('closed');
-      mainContent.classList.toggle('collapsed');
-    }
-  </script>
 </body>
+
 </html>

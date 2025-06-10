@@ -14,7 +14,6 @@
         <th>User ID</th>
         <th>Name</th>
         <th>Email</th>
-        <th>Role</th>
       </tr>
     </thead>
     <tbody>
@@ -32,14 +31,13 @@
     <label for="password">Password:</label>
     <input type="password" id="password" name="password" required>
 
-    <label for="role">Role:</label>
-    <select id="role" name="role" required>
-      <option value="tenant">Tenant</option>
-      <option value="owner">Owner</option>
-    </select>
-
+    
     <button type="submit">Submit</button>
   </form>
 </body>
+    <div id="loadingIndicator">
+        <div class="spinner"></div>
+        <span>Loading... Please wait.</span>
+    </div>
 <script src="JS/users.js"></script>
 </html>

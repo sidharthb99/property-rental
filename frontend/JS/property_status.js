@@ -1,6 +1,7 @@
 const tenant_url = "http://localhost:5000/property_status_logs";
 
-fetch(tenant_url)
+async function fetchdata() {
+  fetch(tenant_url)
     .then(response => {
         if (!response.ok)
             throw new Error("Failed to fetch propety_status_logs Data");
@@ -23,8 +24,9 @@ fetch(tenant_url)
     .catch(err => {
         console.log(err.message);
     });
+}
 
-
+document.addEventListener('DOMContentLoaded', fetchdata);
 
 const propertyStatusForm = document.getElementById('propertyStatusForm');
 const statusLogURL = 'http://localhost:5000/property_status_log'; 
@@ -32,6 +34,15 @@ const statusLogURL = 'http://localhost:5000/property_status_log';
 if (propertyStatusForm) {
   propertyStatusForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+    const submitButton = userForm.querySelector('button[type="submit"]');
+        const loadingIndicator = document.getElementById('loadingIndicator'); 
+
+        submitButton.textContent = 'Submitting...';
+        submitButton.disabled = true;
+
+        if (loadingIndicator) {
+            loadingIndicator.style.display = 'flex'; 
+        }
 
     const data = {
       property_id: document.getElementById('property_id').value,
@@ -52,12 +63,19 @@ if (propertyStatusForm) {
         console.log(result);
         document.getElementById('message').textContent = `Status logged for Property ID ${result.property_id}`;
         propertyStatusForm.reset();
+        await fetchdata();
       } else {
         throw new Error(result?.err || 'Unknown error');
       }
     } catch (err) {
       console.error('Error submitting status log:', err);
       alert('Failed to log property status');
-    }
+    }finally {
+            submitButton.textContent = 'Submit';
+            submitButton.disabled = false;
+            if (loadingIndicator) {
+                loadingIndicator.style.display = 'none';
+            }
+        }
   });
 }

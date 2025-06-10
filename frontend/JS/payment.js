@@ -1,5 +1,6 @@
 const tenant_url = "http://localhost:5000/payments";
-
+async function fetchdata() {
+  
 fetch(tenant_url)
     .then(response => {
         if (!response.ok)
@@ -24,13 +25,23 @@ fetch(tenant_url)
     .catch(err => {
         console.log(err.message);
     });
+}
 
-
+document.addEventListener('DOMContentLoaded', fetchdata);
 const paymentForm = document.getElementById('paymentForm');
 const paymentURL = 'http://localhost:5000/payment';
 if (paymentForm) {
   paymentForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+    const submitButton = paymentForm.querySelector('button[type="submit"]');
+        const loadingIndicator = document.getElementById('loadingIndicator'); 
+
+        submitButton.textContent = 'Submitting...';
+        submitButton.disabled = true;
+
+        if (loadingIndicator) {
+            loadingIndicator.style.display = 'flex'; 
+        }
 
     const data = {
       booking_id: document.getElementById('booking_id').value,
@@ -52,6 +63,7 @@ if (paymentForm) {
         alert('Payment recorded successfully!');
         console.log(result);
         paymentForm.reset();
+        await fetchdata();
       } else {
         alert('Payment failed: ' + (result?.err || 'Unknown error'));
         console.error(result);
@@ -59,6 +71,12 @@ if (paymentForm) {
     } catch (error) {
       console.error('Error submitting payment:', error);
       alert('Error submitting payment. Check the console for details.');
-    }
+    }finally {
+            submitButton.textContent = 'Submit';
+            submitButton.disabled = false;
+            if (loadingIndicator) {
+                loadingIndicator.style.display = 'none';
+            }
+        }
   });
 }

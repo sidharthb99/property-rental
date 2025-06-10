@@ -1,6 +1,7 @@
 const users_url = "http://localhost:5000/users";
 
-fetch(users_url)
+async function fetchdata() {
+    fetch(users_url)
     .then(response => {
         if (!response.ok)
             throw new Error("Failed to fetch Users Data");
@@ -15,7 +16,6 @@ fetch(users_url)
         <td>${user.user_id}</td>
         <td>${user.name}</td>
         <td>${user.email}</td>
-        <td>${user.role}</td>
       `;
             tbody.appendChild(row);
         });
@@ -23,7 +23,10 @@ fetch(users_url)
     .catch(err => {
         console.log(err.message);
     });
+}
 
+
+document.addEventListener('DOMContentLoaded', fetchdata);
 
 const userForm = document.getElementById('userForm');
 const userURL = "http://localhost:5000/users";
@@ -31,12 +34,21 @@ const userURL = "http://localhost:5000/users";
 if (userForm) {
     userForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+        
+const submitButton = userForm.querySelector('button[type="submit"]');
+        const loadingIndicator = document.getElementById('loadingIndicator'); 
+
+        submitButton.textContent = 'Submitting...';
+        submitButton.disabled = true;
+
+        if (loadingIndicator) {
+            loadingIndicator.style.display = 'flex'; 
+        }
 
         const data = {
             name: document.getElementById('name').value,
             email: document.getElementById('email').value,
             password: document.getElementById('password').value,
-            role: document.getElementById('role').value
         };
 
         try {
@@ -59,9 +71,16 @@ if (userForm) {
             // document.getElementById('message').textContent = `${userName} created successfully!`;
             alert('User registered successfully!');
             userForm.reset();
+            await fetchdata();
         } catch (err) {
             console.error('Error submitting user:', err);
             alert('User submission failed');
+        }finally {
+            submitButton.textContent = 'Submit';
+            submitButton.disabled = false;
+            if (loadingIndicator) {
+                loadingIndicator.style.display = 'none';
+            }
         }
     });
 }

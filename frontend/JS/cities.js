@@ -1,6 +1,7 @@
 const city_url = "http://localhost:5000/cities";
 
-fetch(city_url)
+async function fetchdata() {
+  fetch(city_url)
     .then(response => {
         if (!response.ok)
             throw new Error("Failed to fetch city Data");
@@ -23,7 +24,9 @@ fetch(city_url)
     .catch(err => {
         console.log(err.message);
     });
+}
 
+document.addEventListener('DOMContentLoaded', fetchdata);
 
 const cityForm = document.getElementById('cityForm');
 const cityURL = 'http://localhost:5000/cities';
@@ -31,6 +34,16 @@ const cityURL = 'http://localhost:5000/cities';
 if (cityForm) {
   cityForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+
+    const submitButton = cityForm.querySelector('button[type="submit"]');
+    const loadingIndicator = document.getElementById('loadingIndicator');
+
+    submitButton.textContent = '...Submitting';
+    submitButton.disabled = true;
+
+    if(loadingIndicator){
+      loadingIndicator.style.display = 'flex';
+    }
 
     const data = {
       name: document.getElementById('name').value,
@@ -49,9 +62,17 @@ if (cityForm) {
       console.log(result);
       alert('City registered successfully!');
       cityForm.reset();
+      await fetchdata();
     } catch (err) {
       console.error('Error submitting city:', err);
       alert('City submission failed');
+    }finally{
+      submitButton.textContent = 'Submit';
+    submitButton.disabled = false;
+
+    if(loadingIndicator){
+      loadingIndicator.style.display = 'none';
+    }
     }
   });
 }

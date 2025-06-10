@@ -1,16 +1,163 @@
-table {
-    width: 80%;
-    margin: 20px auto;
-    border-collapse: collapse;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
 }
 
-th,
-td {
-    padding: 10px;
-    border: 1px solid #ddd;
-    text-align: left;
+body {
+  background-color: #f2f2f2;
+  padding: 40px 20px;
+  color: #333;
 }
 
-th {
-    background-color: #f2f2f2;
+
+h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2rem;
+  color: #444;
+}
+
+#usertable,
+#bookingtable,
+#propertytable,
+#ownertable,
+#tenanttable,
+#paymenttable,
+#citytable,
+#contacttable,
+#contact_methodtable,
+#property_statustable {
+  width: 90%;
+  max-width: 800px;
+  margin: 0 auto 40px auto;
+  border-collapse: collapse;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+#usertable th, #usertable td,
+#bookingtable th, #bookingtable td,
+#propertytable th, #propertytable td,
+#ownertable th, #ownertable td,
+#tenanttable th, #tenanttable td,
+#paymenttable th, #paymenttable td,
+#citytable th, #citytable td,
+#contacttable th, #contacttable td,
+#contact_methodtable th, #contact_methodtable td,
+#property_statustable th, #property_statustable td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+#usertable th,
+#bookingtable th,
+#propertytable th,
+#ownertable th,
+#tenanttable th,
+#paymenttable th,
+#citytable th,
+#contacttable th,
+#contact_methodtable th,
+#property_statustable th {
+  background-color: #f4b400;
+  color: white;
+  font-weight: 600;
+}
+
+
+form#userForm,
+#bookingForm,
+#propertyForm,
+#ownerForm,
+#tenantForm,
+#paymentForm,
+#cityForm,
+#contactForm,
+#contactMethodForm,
+#propertyStatusForm {
+  width: 90%;
+  max-width: 500px;
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+form label {
+  display: block;
+  margin-top: 15px;
+  font-weight: 500;
+}
+
+form input {
+  width: 100%;
+  padding: 10px 12px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+#description, #status {
+  width: 100%;
+  padding: 10px 12px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+form button {
+  margin-top: 20px;
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  background-color: #f4b400;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+form button:hover {
+  background-color: #d39e00;
+}
+
+
+#loadingIndicator {
+    display: none; 
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    justify-content: center; 
+    align-items: center;    
+    z-index: 1000;
+    font-size: 1.5em;
+    color: #333;
+}
+
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-left-color: #333;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+    margin-right: 10px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }

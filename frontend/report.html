@@ -3,27 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chart</title>
+    <title>Analytics Dashboard</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background-color: #f2f2f2;
+            padding: 40px 20px;
+            color: #333;
+        }
+
+        /* Heading */
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2rem;
+            color: #444;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .chart-div {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 90%;
+            max-width: 800px; /* Adjusted to allow two charts side-by-side on larger screens */
+            /* For two charts side-by-side, you might want this: */
+            flex: 1; /* Allow flex items to grow and shrink */
+            min-width: 300px; /* Minimum width before wrapping */
+        }
+        /* Override for single chart container if needed, but not strictly necessary with flex */
+        .chart-container > .chart-div:nth-child(1) {
+            max-width: 800px; /* Max width for the first chart (bar chart) */
+        }
+        .chart-container > .chart-div:nth-child(2) {
+            max-width: 600px; /* Max width for the second chart (doughnut chart) */
+        }
+
+
+        .chart-div h3 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #444;
+            font-size: 1.5rem;
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+
+        /* Error State */
+        .error {
+            text-align: center;
+            padding: 20px;
+            color: #d32f2f;
+            background-color: #ffebee;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 10px;
+            }
+            
+            .chart-div {
+                width: 100%;
+                padding: 15px;
+            }
+            .chart-container {
+                flex-direction: column; /* Stack charts vertically on small screens */
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="chart-div">
-        <canvas id="myChart"></canvas>
-    </div>
+    <h2>Analytics Dashboard</h2>
+    
+    <div class="chart-container">
+        <div class="chart-div">
+            <h3>Properties by City</h3>
+            <canvas id="myChart"></canvas>
+            <div id="chart1Loading" class="loading">Loading chart data...</div>
+            <div id="chart1Error" class="error" style="display: none;"></div>
+        </div>
 
-    <div class="chart-div">
-        <canvas id="myChart_1"></canvas>
+        <div class="chart-div">
+            <h3>Payment Methods Distribution</h3>
+            <canvas id="myChart_1"></canvas>
+            <div id="chart2Loading" class="loading">Loading chart data...</div>
+            <div id="chart2Error" class="error" style="display: none;"></div>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+        // Primary color scheme
+        const primaryColor = '#f4b400';
+        const primaryColorLight = 'rgba(244, 180, 0, 0.6)';
+        const backgroundColor = '#ffffff';
+        const textColor = '#333333';
+        const gridColor = '#e0e0e0';
+
+        // Chart 1: Properties by City
+        const chart1Loading = document.getElementById('chart1Loading');
+        const chart1Error = document.getElementById('chart1Error');
+
         apiURL = 'http://localhost:5000/report';
         fetch(apiURL)
             .then(response => {
-                if (!response.ok) throw new Error("Failed to fetch chart data");
+                if (!response.ok) throw new Error("Failed to fetch properties data");
                 return response.json();
             })
             .then(data => {
-                const labels = data.map(entry => `City ${entry.name}`);
+                chart1Loading.style.display = 'none';
+                
+                const labels = data.map(entry => entry.name || `City ${entry.id}`);
                 const values = data.map(entry => entry.total_properties);
 
                 const ctx = document.getElementById('myChart').getContext('2d');
@@ -33,20 +147,49 @@
                     data: {
                         labels: labels,
                         datasets: [{
-                            label: 'Total Properties by City',
+                            label: 'Total Properties',
                             data: values,
-                            backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                            borderColor: 'rgba(54, 162, 235, 1)',
+                            backgroundColor: primaryColorLight, // Bar chart usually has one primary color
+                            borderColor: primaryColor,
                             borderWidth: 1
                         }]
                     },
                     options: {
                         responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top',
+                                labels: {
+                                    color: textColor
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: backgroundColor,
+                                titleColor: textColor,
+                                bodyColor: textColor,
+                                borderColor: gridColor,
+                                borderWidth: 1
+                            }
+                        },
                         scales: {
                             y: {
                                 beginAtZero: true,
                                 ticks: {
-                                    precision: 0
+                                    precision: 0,
+                                    color: textColor
+                                },
+                                grid: {
+                                    color: gridColor
+                                }
+                            },
+                            x: {
+                                ticks: {
+                                    color: textColor
+                                },
+                                grid: {
+                                    color: gridColor
                                 }
                             }
                         }
@@ -54,21 +197,30 @@
                 });
             })
             .catch(error => {
-                console.error('Chart Load Error:', error.message);
+                chart1Loading.style.display = 'none';
+                chart1Error.style.display = 'block';
+                chart1Error.textContent = 'Error: ' + error.message;
+                console.error('Chart Load Error (Properties by City):', error.message);
             });
 
-    </script>
+        // Chart 2: Payment Methods
+        const chart2Loading = document.getElementById('chart2Loading');
+        const chart2Error = document.getElementById('chart2Error');
 
-    <script>
         apiURL = 'http://localhost:5000/report_payment';
         fetch(apiURL)
             .then(response => {
-                if (!response.ok) throw new Error("Failed to fetch chart data");
+                if (!response.ok) throw new Error("Failed to fetch payment data");
                 return response.json();
             })
             .then(data => {
-                const labels = data.map(entry => `City ${entry.payment_method}`);
+                chart2Loading.style.display = 'none';
+                
+                const labels = data.map(entry => entry.payment_method || `Method ${entry.id}`);
                 const values = data.map(entry => entry.count);
+
+                // Generate distinct colors for each segment
+                const backgroundColors = generateColors(values.length); // This is where the fix comes in
 
                 const ctx = document.getElementById('myChart_1').getContext('2d');
 
@@ -77,29 +229,72 @@
                     data: {
                         labels: labels,
                         datasets: [{
-                            label: 'Total Properties by City',
+                            label: 'Payment Methods',
                             data: values,
-                            backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                            borderColor: 'rgba(54, 162, 235, 1)',
+                            backgroundColor: backgroundColors, // Use the array of distinct colors
+                            borderColor: backgroundColor,
                             borderWidth: 1
                         }]
                     },
                     options: {
                         responsive: true,
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                ticks: {
-                                    precision: 0
+                        maintainAspectRatio: true,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'right',
+                                labels: {
+                                    color: textColor,
+                                    padding: 20
                                 }
+                            },
+                            tooltip: {
+                                backgroundColor: backgroundColor,
+                                titleColor: textColor,
+                                bodyColor: textColor,
+                                borderColor: gridColor,
+                                borderWidth: 1
                             }
-                        }
+                        },
+                        cutout: '60%'
                     }
                 });
             })
             .catch(error => {
-                console.error('Chart Load Error:', error.message);
+                chart2Loading.style.display = 'none';
+                chart2Error.style.display = 'block';
+                chart2Error.textContent = 'Error: ' + error.message;
+                console.error('Chart Load Error (Payment Methods):', error.message);
             });
+
+        // Helper function to generate distinct colors
+        function generateColors(count) {
+            const colors = [];
+            // A set of predefined vibrant colors, or use HSL to generate dynamically
+            const predefinedColors = [
+                '#42A5F5', // Blue
+                '#66BB6A', // Green
+                '#FFA726', // Orange
+                '#EF5350', // Red
+                '#AB47BC', // Purple
+                '#78909C', // Blue-Grey
+                '#FFEE58', // Yellow
+                '#26A69A', // Teal
+                '#FF7043', // Deep Orange
+                '#9CCC65', // Light Green
+            ];
+
+            for (let i = 0; i < count; i++) {
+                // Use a predefined color if available, otherwise generate a hue
+                if (predefinedColors[i]) {
+                    colors.push(predefinedColors[i]);
+                } else {
+                    const hue = (i * 137.508) % 360; // Golden angle approximation for good distribution
+                    colors.push(`hsl(${hue}, 70%, 60%)`); // Using HSL for dynamic generation
+                }
+            }
+            return colors;
+        }
     </script>
 </body>
 </html>
