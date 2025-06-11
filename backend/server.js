@@ -96,10 +96,10 @@ app.post('/properties', async (req, res) => {
 
     try {
         const result = await pool.query(
-            'INSERT INTO properties (owner_id, title, description, address, city_id, price_per_month, status) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
+            ' INTO properties (owner_id, title, description, address, city_id, price_per_month, status) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
             [owner_id, title, description, address, city_id, price_per_month, status || 'available']
         );
-        
+        INSERT
         res.status(201).json(result.rows[0]);
     } catch (err) {
         console.error('DB Error:', err.message);
